@@ -24,6 +24,49 @@
 
 
 header('Content-Type: application/json');
+$data = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        if (is_array($data) || is_object($data)) {
+            $modifiedPath = str_replace("\\\\", "\\", $data['file_path']);
+            if (file_exists($modifiedPath)) {
+
+
+
+
+
+
+
+
+            } else {
+                echo "File does not exist.";
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Decoded JSON is not an array or object'
+            ]);
+        }
+    } else {
+        $jsonError = json_last_error();
+        $jsonErrorMsg = json_last_error_msg();
+
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Invalid JSON',
+            'error_code' => $jsonError,
+            'error_message' => $jsonErrorMsg
+        ]);
+    }
+} else {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Only POST requests are allowed'
+    ]);
+}
 
 
 // var_dump($client->isAccessTokenExpired());
