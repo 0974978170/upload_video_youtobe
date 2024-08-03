@@ -44,10 +44,11 @@ if ($client->getAccessToken()) {
   $htmlBody = '';
   try{
     $tokens = $client->getAccessToken();
-    var_dump($tokens);
     if (isset($tokens['access_token'])) {
         $keys['access_token'] = $tokens['access_token'];
         $keys['refresh_token'] = $tokens['refresh_token'];
+        $keys['expires_in'] = $tokens['expires_in'];
+        $keys['created'] = $tokens['created'];
         $new_json_data = json_encode($keys);
         file_put_contents('keys.json', $new_json_data);
         $htmlBody .= "<h3>Get Access Token Succsess</h3><ul>";
